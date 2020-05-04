@@ -7,6 +7,20 @@ app.use(express.json());
 
 const projects = [];
 
+function logRequests(req, res, next) {
+  const { method, url } = req;
+
+  const logLabel = `[${method.toUpperCase()}] ${url} / Request has taken`;
+
+  console.time(logLabel);
+
+  next();
+
+  console.timeEnd(logLabel);
+}
+
+app.use(logRequests);
+
 app.get('/projects', (req, res) => {
   const { title } = req.query;
 
